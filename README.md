@@ -8,6 +8,20 @@ In fact, my goal is to know various ways to achieve the same result, questioning
 
 > **For English readers:** Excuse me if some examples are in Spanish and for my grammar errors in both languages! 😄
 
+## Repository Structure
+
+| Directory | Files | Description |
+|-----------|-------|-------------|
+| `array/` | 78 | Native PHP array functions (complete coverage) |
+| `ArrayObject/` | 26 | ArrayObject class: 2 properties + 24 methods |
+| `string/` | 41 | String manipulation, search, replace, format, encoding |
+| `math/` | 16 | Math operations, rounding, random, base conversion |
+| `variable/` | 19 | Type checking, casting, inspection and debug |
+| `json/` | 3 | JSON encode, decode, error handling |
+| `datetime/` | 10 | Date/time creation, formatting, diff, intervals |
+| `regex/` | 6 | PCRE functions: match, replace, split |
+| **Total** | **199** | |
+
 ## Native PHP vs PHP Extensions/Modules
 
 My current PHP version is **8.3.11**. To know yours, run:
