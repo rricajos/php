@@ -29,7 +29,13 @@ In fact, my goal is to know various ways to achieve the same result, questioning
 | `spl/` | 8 | SPL data structures and iterators |
 | `error_handling/` | 6 | Exceptions, error handlers, finally |
 | `output_encryption/` | 8 | Output buffering, password hashing, OpenSSL, Sodium |
-| **Total** | **288** | |
+| `database/` | 10 | PDO, prepared statements, transactions, SQLite, MySQLi, query builder |
+| `xml/` | 4 | SimpleXML, DOMDocument, XMLReader/Writer, XPath |
+| `generators/` | 4 | yield, yield from, send, pipelines, practical patterns |
+| `design_patterns/` | 8 | Singleton, Factory, Observer, Strategy, Decorator, Repository, MVC, DI |
+| **Total** | **315** | |
+
+> Run `php run.php` from the project root to explore all examples interactively via CLI.
 
 ## Native PHP vs PHP Extensions/Modules
 
