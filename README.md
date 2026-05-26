@@ -13,14 +13,23 @@ In fact, my goal is to know various ways to achieve the same result, questioning
 | Directory | Files | Description |
 |-----------|-------|-------------|
 | `array/` | 78 | Native PHP array functions (complete coverage) |
-| `ArrayObject/` | 26 | ArrayObject class: 2 properties + 24 methods |
-| `string/` | 41 | String manipulation, search, replace, format, encoding |
+| `ArrayObject/` | 24 | ArrayObject class: 2 properties + 22 methods |
+| `string/` | 49 | String manipulation, search, replace, format, encoding |
 | `math/` | 16 | Math operations, rounding, random, base conversion |
 | `variable/` | 19 | Type checking, casting, inspection and debug |
 | `json/` | 3 | JSON encode, decode, error handling |
 | `datetime/` | 10 | Date/time creation, formatting, diff, intervals |
 | `regex/` | 6 | PCRE functions: match, replace, split |
-| **Total** | **199** | |
+| `filesystem/` | 16 | File I/O, directories, paths, glob |
+| `http/` | 10 | Headers, cookies, sessions, superglobals, filters |
+| `curl/` | 6 | cURL: init, options, POST, info, errors, multi |
+| `mbstring/` | 8 | Multibyte string functions (UTF-8) |
+| `oop/` | 10 | OOP: classes, inheritance, traits, interfaces, magic methods |
+| `php8/` | 11 | PHP 8.x features: match, enums, fibers, readonly, attributes |
+| `spl/` | 8 | SPL data structures and iterators |
+| `error_handling/` | 6 | Exceptions, error handlers, finally |
+| `output_encryption/` | 8 | Output buffering, password hashing, OpenSSL, Sodium |
+| **Total** | **288** | |
 
 ## Native PHP vs PHP Extensions/Modules
 
