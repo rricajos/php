@@ -33,9 +33,16 @@ In fact, my goal is to know various ways to achieve the same result, questioning
 | `xml/` | 4 | SimpleXML, DOMDocument, XMLReader/Writer, XPath |
 | `generators/` | 4 | yield, yield from, send, pipelines, practical patterns |
 | `design_patterns/` | 8 | Singleton, Factory, Observer, Strategy, Decorator, Repository, MVC, DI |
-| **Total** | **315** | |
+| `testing/` | 6 | PHPUnit basics, assertions, mocks/stubs, data providers, TDD |
+| `closures/` | 2 | Anonymous functions, use keyword, arrow functions, middleware |
+| `namespaces/` | 2 | Namespaces, PSR-4 autoloading, Composer config |
+| `type_casting/` | 2 | Explicit casting, type juggling, strict_types, type declarations |
+| `mini_project/` | 7 | Functional CLI task manager (SQLite, OOP, patterns, PHP 8.x) |
+| **Total** | **334** | |
 
 > Run `php run.php` from the project root to explore all examples interactively via CLI.
+> Run `php lint.php` to validate syntax of all files.
+> Run `php mini_project/app.php` to try the integrated task manager demo.
 
 ## Native PHP vs PHP Extensions/Modules
 
