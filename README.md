@@ -1,5 +1,11 @@
 # PHP 8.3 In-depth study
 
+[![PHP CI](https://github.com/rricajos/php/actions/workflows/ci.yml/badge.svg)](https://github.com/rricajos/php/actions/workflows/ci.yml)
+[![PHP Version](https://img.shields.io/badge/PHP-8.1%2B-777BB4?logo=php&logoColor=white)](https://www.php.net/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://img.shields.io/badge/tests-93%20passed-brightgreen)](https://github.com/rricajos/php/actions)
+[![Files](https://img.shields.io/badge/examples-349%20files-blue)](https://github.com/rricajos/php)
+
 This is an in-depth study of the PHP language repository, testing examples of each function of this object-oriented programming language from version 5 (currently 8.3).
 
 PHP is interpreted; in other words, it is not compiled, except when using tools or extensions like Zend Opcache or HHVM (HipHop Virtual Machine) run engines.

@@ -1,0 +1,446 @@
+openapi: 3.0.3
+info:
+  title: Gestor de Tareas API
+  description: |
+    API REST para gestionar tareas con autenticación JWT.
+    Parte del proyecto de estudio PHP 8.3 de [rricajos](https://github.com/rricajos/php).
+
+    ## Autenticación
+    Todas las rutas `/tasks` requieren un token JWT en el header `Authorization: Bearer <token>`.
+    Obtén un token registrándote y haciendo login en `/auth`.
+  version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: Ricard Penin Honrubia
+    url: https://github.com/rricajos
+
+servers:
+  - url: http://localhost:8080
+    description: Servidor local de desarrollo
+
+tags:
+  - name: Auth
+    description: Registro y autenticación de usuarios
+  - name: Tasks
+    description: Operaciones CRUD sobre tareas
+  - name: Export
+    description: Exportación y estadísticas
+
+paths:
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Registrar un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                  minLength: 3
+                  maxLength: 50
+                  pattern: '^[a-zA-Z0-9_]+$'
+                  example: admin
+                password:
+                  type: string
+                  minLength: 6
+                  example: secret123
+      responses:
+        '201':
+          description: Usuario registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthRegisterResponse'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '409':
+          description: El usuario ya existe
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Iniciar sesión y obtener token JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                  example: admin
+                password:
+                  type: string
+                  example: secret123
+      responses:
+        '200':
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthLoginResponse'
+        '401':
+          description: Credenciales inválidas
+
+  /tasks:
+    get:
+      tags: [Tasks]
+      summary: Listar tareas
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [pendiente, completada, todas]
+          description: Filtrar por estado
+      responses:
+        '200':
+          description: Lista de tareas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags: [Tasks]
+      summary: Crear una nueva tarea
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                title:
+                  type: string
+                  maxLength: 100
+                  example: Estudiar PHP 8
+                description:
+                  type: string
+                  example: Repasar enums y match
+                priority:
+                  type: string
+                  enum: [alta, media, baja]
+                  default: media
+                  example: alta
+      responses:
+        '201':
+          description: Tarea creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /tasks/{id}:
+    get:
+      tags: [Tasks]
+      summary: Obtener una tarea por ID
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      responses:
+        '200':
+          description: Tarea encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Tasks]
+      summary: Eliminar una tarea
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      responses:
+        '200':
+          description: Tarea eliminada
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /tasks/{id}/complete:
+    patch:
+      tags: [Tasks]
+      summary: Marcar tarea como completada
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      responses:
+        '200':
+          description: Tarea completada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          description: La tarea ya está completada
+
+  /tasks/search:
+    get:
+      tags: [Tasks]
+      summary: Buscar tareas por palabra clave
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          description: Palabra clave a buscar en título y descripción
+          example: PHP
+      responses:
+        '200':
+          description: Resultados de búsqueda
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /tasks/stats:
+    get:
+      tags: [Tasks]
+      summary: Obtener estadísticas de tareas
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Estadísticas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /tasks/export:
+    get:
+      tags: [Export]
+      summary: Exportar tareas a archivo
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, csv]
+            default: json
+          description: Formato de exportación
+      responses:
+        '200':
+          description: Exportación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      format:
+                        type: string
+                      file:
+                        type: string
+                      tasks_exported:
+                        type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    TaskId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      description: ID de la tarea
+
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        titulo:
+          type: string
+          example: Estudiar PHP 8
+        descripcion:
+          type: string
+          example: Repasar enums y match
+        prioridad:
+          type: string
+          enum: [alta, media, baja]
+        estado:
+          type: string
+          enum: [pendiente, completada]
+        fecha_creacion:
+          type: string
+          format: date-time
+        fecha_completada:
+          type: string
+          format: date-time
+          nullable: true
+
+    TaskResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/Task'
+
+    TaskListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+
+    StatsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+          properties:
+            total:
+              type: integer
+            completadas:
+              type: integer
+            pendientes:
+              type: integer
+            por_prioridad:
+              type: object
+              properties:
+                alta:
+                  type: integer
+                media:
+                  type: integer
+                baja:
+                  type: integer
+
+    AuthRegisterResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            created_at:
+              type: string
+
+    AuthLoginResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            token:
+              type: string
+            type:
+              type: string
+              example: Bearer
+            expires_in:
+              type: integer
+              example: 86400
+            user:
+              type: object
+              properties:
+                id:
+                  type: integer
+                username:
+                  type: string
+
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+
+  responses:
+    Unauthorized:
+      description: Token JWT faltante o inválido
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Error de validación
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
