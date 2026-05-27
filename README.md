@@ -28,7 +28,8 @@ In fact, my goal is to know various ways to achieve the same result, questioning
 | `php8/` | 11 | PHP 8.x features: match, enums, fibers, readonly, attributes |
 | `spl/` | 8 | SPL data structures and iterators |
 | `error_handling/` | 6 | Exceptions, error handlers, finally |
-| `output_encryption/` | 8 | Output buffering, password hashing, OpenSSL, Sodium |
+| `output_buffering/` | 2 | Output buffering: ob_start, ob_get_clean, nested buffers |
+| `encryption/` | 6 | Password hashing, OpenSSL, Sodium, hash functions, random |
 | `database/` | 10 | PDO, prepared statements, transactions, SQLite, MySQLi, query builder |
 | `xml/` | 4 | SimpleXML, DOMDocument, XMLReader/Writer, XPath |
 | `generators/` | 4 | yield, yield from, send, pipelines, practical patterns |
@@ -38,7 +39,7 @@ In fact, my goal is to know various ways to achieve the same result, questioning
 | `namespaces/` | 2 | Namespaces, PSR-4 autoloading, Composer config |
 | `type_casting/` | 2 | Explicit casting, type juggling, strict_types, type declarations |
 | `mini_project/` | 7 | Functional CLI task manager (SQLite, OOP, patterns, PHP 8.x) |
-| **Total** | **334** | |
+| **Total** | **334** | **Each directory includes an INDEX.md with recommended reading order** |
 
 > Run `php run.php` from the project root to explore all examples interactively via CLI.
 > Run `php lint.php` to validate syntax of all files.
