@@ -1,0 +1,4 @@
+/vendor/
+/.phpunit.cache/
+/mini_project/data/tasks.db
+composer.lock
